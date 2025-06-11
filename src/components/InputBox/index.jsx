@@ -1,3 +1,5 @@
+import "./style.css"
+
 export default function InputBox({ moved, textareaRef, onSend, isTyping }) {
   const handleKeyDown = (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {

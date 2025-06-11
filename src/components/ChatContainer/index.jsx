@@ -1,5 +1,6 @@
 import { Virtuoso } from 'react-virtuoso';
-import MarkdownRenderer from "./MarkdownRenderer";
+import MarkdownRenderer from "../MarkdownRenderer";
+import "./style.css"
 
 export default function ChatContainer({ messages, botTypingText }) {
   // Combine existing messages with typing indicator as last item
@@ -10,9 +11,10 @@ export default function ChatContainer({ messages, botTypingText }) {
   return (
     <div className="chat-container">
       <Virtuoso
-        style={{ height: '100%', width: '100%' }}
+        className='virtuoso-container'
         data={fullMessages}
         followOutput="auto"
+        increaseViewportBy={{ top: 0, bottom: 300 }} // buffer space
         itemContent={(index, msg) => (
           <div
             className={`chat-message ${msg.type === 'user' ? 'user' : msg.type === 'bot' ? 'bot' : msg.type === 'thinking' ? 'thinking' : 'bot'}`}

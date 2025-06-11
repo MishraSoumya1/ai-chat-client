@@ -3,7 +3,7 @@ import Markdown from 'react-markdown';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
-
+import "./style.css"
 
 const MarkdownRenderer = ({ content }) => {
   const [copiedLine, setCopiedLine] = useState(null);
