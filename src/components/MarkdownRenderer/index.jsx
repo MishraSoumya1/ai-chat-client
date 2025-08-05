@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import Markdown from 'react-markdown';
+import rehypeRaw from 'rehype-raw'; // <-- ADD THIS
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
-import "./style.css"
+import "./style.css";
 
 const MarkdownRenderer = ({ content }) => {
   const [copiedLine, setCopiedLine] = useState(null);
@@ -15,9 +16,9 @@ const MarkdownRenderer = ({ content }) => {
 
   return (
     <Markdown
+      rehypePlugins={[rehypeRaw]} // <-- ADD THIS
       components={{
-        // eslint-disable-next-line no-unused-vars
-        code({ node, inline, className, children, ...props }) {
+        code({  inline, className, children, ...props }) {
           const match = /language-(\w+)/.exec(className || '');
           const codeString = String(children).trim();
 
