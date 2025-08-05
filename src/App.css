@@ -1,7 +1,18 @@
 :root {
-  --user-chat-width: 70%;
-  --chat-app-comp-theme: oklch(53.2% .157 131.589);
-  --user-chat-bubble-background: oklch(84.1% .238 128.85);
+  --user-chat-width: 60%;
+  /* slightly narrower to convey professionalism */
+  --chat-app-comp-theme: oklch(32.5% 0.12 240);
+  /* Deep navy blue */
+  --user-chat-bubble-background: oklch(95% 0.05 280);
+  /* Light gray-blue */
+  --chat-app-secondary-color: oklch(25.5% 0.15 200);
+  /* Rich charcoal */
+  --chat-app-text-color: oklch(90% 0.02 0);
+  /* Crisp white */
+  --chat-app-border-color: oklch(40% 0.08 220);
+  /* Dark gray-blue */
+  --chat-app-accent-color: oklch(55% 0.20 120);
+  /* Greenish-blue for highlights */
 }
 
 /* Hide scrollbars for the whole page */

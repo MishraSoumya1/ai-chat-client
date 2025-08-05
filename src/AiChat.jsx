@@ -3,8 +3,6 @@ import ChatContainer from './components/ChatContainer';
 import InputBox from './components/InputBox';
 import Header from './components/Header';
 
-import { botMarkdownMessage } from "./assets/MockText"
-
 function AiChat() {
   const [messages, setMessages] = useState([]);
   const [botTypingText, setBotTypingText] = useState('');
@@ -12,9 +10,10 @@ function AiChat() {
   const [hasUserSentMessage, setHasUserSentMessage] = useState(false);
   const [moved, setMoved] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
+  const [fullBotMessage, setFullBotMessage] = useState('');
   const textareaRef = useRef(null);
 
-  const handleSend = () => {
+  const handleSend = async () => {
     const text = textareaRef.current.value.trim();
     if (!text) return;
 
@@ -28,48 +27,70 @@ function AiChat() {
 
     textareaRef.current.value = '';
     textareaRef.current.blur();
+    setIsTyping(true);
 
-    setIsTyping(true)
-    setTimeout(() => {
-       setMessages((prev) => [
+    try {
+      const response = await fetch('http://localhost:3000/api/v1/ai/question', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ prompt: text })
+      });
+
+      const { data } = await response.json();
+      console.log('#### AI Response:', data);
+
+      const reply = data?.answer || 'Sorry, something went wrong.';
+
+      // Clean up the thinking message
+      setMessages((prev) => prev.filter(msg => msg.type !== 'thinking'));
+
+      // Start typing animation
+      setFullBotMessage(reply);
+      setBotTypingText('');
+      setTriggerTyping(true);
+    } catch (error) {
+      console.error('Error fetching response:', error);
+      setMessages((prev) => [
         ...prev.filter(msg => msg.type !== 'thinking'),
+        { type: 'bot', text: 'Something went wrong. Please try again later.' }
       ]);
-      setTriggerTyping(true)
-    }, 5000);
+      setIsTyping(false);
+    }
   };
 
   useEffect(() => {
-    if (!triggerTyping || !hasUserSentMessage) return;
+    if (!triggerTyping || !hasUserSentMessage || !fullBotMessage) return;
 
-    if (botTypingText.length < botMarkdownMessage.length) {
-      const timeout = setTimeout(() => {
-        setBotTypingText(botMarkdownMessage.slice(0, botTypingText.length + 7));
-      }, 20);
-      return () => clearTimeout(timeout);
-    }
+    let index = 0;
 
-    // Finished typing
-    if (botTypingText === botMarkdownMessage) {
-      setIsTyping(false)
-      setMessages((prev) => [
-        ...prev.filter(msg => msg.type !== 'thinking'),
-        { type: 'bot', text: botMarkdownMessage }
-      ]);
-      setBotTypingText('');
-      setTriggerTyping(false);
-    }
-  }, [triggerTyping, botTypingText, hasUserSentMessage]);
+    const interval = setInterval(() => {
+      index += 5;
+      const typed = fullBotMessage.slice(0, index);
 
+      setBotTypingText(typed);
+
+      if (index >= fullBotMessage.length) {
+        clearInterval(interval);
+        setMessages((prev) => [
+          ...prev.filter(msg => msg.type !== 'bot-typing'),
+          { type: 'bot', text: fullBotMessage }
+        ]);
+        setBotTypingText('');
+        setIsTyping(false);
+        setTriggerTyping(false);
+        setFullBotMessage('');
+      }
+    }, 15);
+
+    return () => clearInterval(interval);
+  }, [triggerTyping, fullBotMessage, hasUserSentMessage]);
 
   return (
     <div className="app">
       <Header />
-
-      <ChatContainer
-        messages={messages}
-        botTypingText={botTypingText}
-      />
-
+      <ChatContainer messages={messages} botTypingText={botTypingText} />
       <InputBox
         moved={moved}
         textareaRef={textareaRef}
