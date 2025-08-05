@@ -7,85 +7,60 @@
   align-items: center;
   justify-content: space-between;
   position: fixed;
-  padding: 0 16px;
   top: 0;
   left: 0;
-  z-index: 1;
-  font-size: 20px;
+  z-index: 10;
+  padding: 0 20px;
   box-sizing: border-box;
-  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Left side: Logo */
 .header-left {
   display: flex;
   align-items: center;
   font-weight: bold;
   font-size: 1.2rem;
-  gap: 0.4rem;
+  gap: 0.5rem;
   white-space: nowrap;
 }
 
-.app-name {
-  background: linear-gradient(90deg,
-      oklch(80% 0.2 140),
-      oklch(80% 0.25 180));
-  background-clip: text;
-  /* ✅ Standard property */
-  -webkit-background-clip: text;
-  /* ✅ WebKit prefix for Safari, Chrome */
-  -webkit-text-fill-color: transparent;
-  color: transparent;
-  /* ✅ Fallback for some browsers */
+.logo {
+  font-size: 1.4rem;
 }
 
+.app-name {
+  background: linear-gradient(90deg, #fff 0%, #ffe0e0 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  font-weight: 600;
+  font-size: 1.2rem;
+  letter-spacing: 0.5px;
+}
 
-/* Right side: Responsive layout */
 .header-right {
   display: flex;
   align-items: center;
   gap: 1rem;
-  flex: 1;
+  flex-shrink: 1;
   justify-content: flex-end;
   min-width: 0;
-  /* important for shrinking */
 }
 
-/* Search bar styling */
-.search-bar {
-  background-color: rgba(255, 255, 255, 0.1);
-  border: none;
-  border-radius: 6px;
-  padding: 6px 10px;
-  color: white;
-  font-size: 0.9rem;
-  width: 100%;
-  max-width: 240px;
-  min-width: 100px;
-  transition: background-color 0.3s ease;
-  box-sizing: border-box;
-}
-
-.search-bar::placeholder {
-  color: #ccc;
-}
-
-.search-bar:focus {
-  outline: none;
-  background-color: rgba(255, 255, 255, 0.15);
-}
-
+/* Mobile adjustments */
 @media (max-width: 500px) {
-  .search-bar {
-    max-width: 140px;
+  .header {
+    font-size: 14px;
+    height: 52px;
+    padding: 0 12px;
+  }
+
+  .logo {
+    font-size: 1.2rem;
   }
 
   .app-name {
     font-size: 1rem;
-  }
-
-  .header {
-    font-size: 16px;
-    padding: 0 10px;
   }
 }

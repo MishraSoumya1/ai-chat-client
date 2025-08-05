@@ -2,19 +2,15 @@ import './Header.css';
 
 const Header = () => {
   return (
-    <div className="header">
+    <header className="header">
       <div className="header-left">
-        🤖 <span className="app-name">AIChat</span>
+        <span className="logo">🤖</span>
+        <span className="app-name">AIChat</span>
       </div>
-
       <div className="header-right">
-        <input
-          type="text"
-          className="search-bar"
-          placeholder="Search..."
-        />
+        {/* Add navigation, theme toggle, user info, etc. here if needed */}
       </div>
-    </div>
+    </header>
   );
 };
 

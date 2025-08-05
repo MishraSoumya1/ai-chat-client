@@ -3,7 +3,7 @@ import ChatContainer from './components/ChatContainer';
 import InputBox from './components/InputBox';
 import Header from './components/Header';
 
-function AiChat() {
+function AiChat({token}) {
   const [messages, setMessages] = useState([]);
   const [botTypingText, setBotTypingText] = useState('');
   const [triggerTyping, setTriggerTyping] = useState(false);
@@ -33,7 +33,8 @@ function AiChat() {
       const response = await fetch('http://localhost:3000/api/v1/ai/question', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
         },
         body: JSON.stringify({ prompt: text })
       });

@@ -1,22 +1,97 @@
 :root {
+  --chat-app-background: #ffffff;
+  /* White background */
+  --chat-app-border-color: #cccccc;
+  /* Light gray border */
+  --chat-app-text-color: #000000;
+  /* Black text */
+  --chat-app-accent-color: rgb(255, 51, 51);
+  /* Bright red accent */
+  --chat-app-card-bg: #f9f9f9;
+  /* Slightly off-white card background */
+  --chat-input-bg: #f1f1f1;
+  /* Light input background */
   --user-chat-width: 60%;
-  /* slightly narrower to convey professionalism */
-  --chat-app-comp-theme: oklch(32.5% 0.12 240);
-  /* Deep navy blue */
-  --user-chat-bubble-background: oklch(95% 0.05 280);
-  /* Light gray-blue */
-  --chat-app-secondary-color: oklch(25.5% 0.15 200);
-  /* Rich charcoal */
-  --chat-app-text-color: oklch(90% 0.02 0);
-  /* Crisp white */
-  --chat-app-border-color: oklch(40% 0.08 220);
-  /* Dark gray-blue */
-  --chat-app-accent-color: oklch(55% 0.20 120);
-  /* Greenish-blue for highlights */
+  --chat-app-comp-theme: #ffffff;
+  /* Component background */
+  --user-chat-bubble-background: #f1f1f1;
+  /* Chat bubble background */
+  --chat-app-secondary-color: #eeeeee;
+  /* Light secondary background */
 }
 
 /* Hide scrollbars for the whole page */
 html,
 body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
   font-family: Arial, Helvetica, sans-serif;
+}
+
+.login-container {
+  height: 100vh;
+  background-color: var(--chat-app-background);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-card {
+  background-color: var(--chat-app-card-bg);
+  padding: 2.5rem 2rem;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+  color: var(--chat-app-text-color);
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.login-title {
+  margin: 0;
+  font-size: 1.6rem;
+  text-align: center;
+}
+
+.login-subtitle {
+  font-size: 0.9rem;
+  text-align: center;
+  opacity: 0.7;
+}
+
+.login-input {
+  padding: 0.75rem 1rem;
+  border: none;
+  border-radius: 8px;
+  background-color: var(--chat-input-bg);
+  font-size: 1rem;
+  color: #000;
+}
+
+.login-input:focus {
+  outline: 2px solid var(--chat-app-accent-color);
+}
+
+.login-button {
+  padding: 0.8rem 1rem;
+  background-color: var(--chat-app-accent-color);
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: 0.2s ease;
+}
+
+.login-button:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.login-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
