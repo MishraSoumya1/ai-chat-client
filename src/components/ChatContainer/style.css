@@ -1,65 +1,90 @@
-.virtuoso-container {
-  height: 100%;
-  width: 100%;
-  -ms-overflow-style: none;
-}
-
-
-.virtuoso-container::-webkit-scrollbar {
-  display: none;
-  /* Chrome, Safari, Opera */
-}
-
+/* Chat container between header and input box */
 .chat-container {
   position: absolute;
   top: 80px;
-  /* below header */
+  /* Below header */
   bottom: 120px;
-  /* above input */
+  /* Above input */
   left: 0;
   right: 0;
-  overflow-y: auto;
   padding: 20px;
   display: flex;
   flex-direction: column;
   gap: 10px;
-  overflow-y: auto;
-  scroll-behavior: smooth;
-  overflow-y: scroll;
+  overflow: hidden;
 }
 
+/* Virtuoso scrolling area */
+.virtuoso-container {
+  height: 100%;
+  width: 100%;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  overflow-y: auto;
+}
 
+.virtuoso-container::-webkit-scrollbar {
+  display: none;
+}
+
+/* Each chat message row */
 .chat-message {
   display: flex;
   max-width: 100%;
-  transform: perspective(800px) translateZ(0);
   margin: 4px 0;
-  /* Add vertical spacing between messages */
+  transform: perspective(800px) translateZ(0);
 }
 
+/* Align user messages to the right */
 .chat-message.user {
   justify-content: flex-end;
 }
 
-.chat-message.bot {
+/* Align bot messages to the left */
+.chat-message.bot,
+.chat-message.botTyping {
   justify-content: flex-start;
 }
 
+/* Preserve original AI thinking style */
+.chat-message.thinking .bubble {
+  font-style: italic;
+  color: #999;
+}
+
+/* Message bubble */
 .bubble {
   background-color: #f4f4f8;
   padding: 10px 20px;
   border-radius: 24px;
-  max-width: var(--user-chat-width);
+  max-width: var(--user-chat-width, 90%);
   word-wrap: break-word;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.06);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   overflow-wrap: break-word;
   word-break: break-word;
   white-space: pre-wrap;
+  line-height: 1.5;
+  font-size: 0.95rem;
 }
 
+/* Slight lift on hover */
+.bubble:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* User bubble color */
+.chat-message.user .bubble {
+  background-color: var(--user-chat-bubble-background, #d1e7ff);
+}
+
+/* Markdown: Inline elements render inline */
 .bubble p,
-.bubble strong {
+.bubble strong,
+.bubble em,
+.bubble span,
+.bubble code {
   display: inline;
   white-space: normal;
   margin: 0;
@@ -71,18 +96,51 @@
   margin-top: 6px;
 }
 
-/* Optional: slight lift on hover for interactive feel */
-.bubble:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.1);
+/* Inline code styling */
+.bubble code {
+  background-color: #eee;
+  padding: 2px 4px;
+  border-radius: 4px;
+  font-family: monospace;
 }
 
-.chat-message.user .bubble {
-  background-color: var(--user-chat-bubble-background);
+/* Typing cursor animation */
+.typing-cursor {
+  display: inline-block;
+  margin-left: 4px;
+  animation: blink 1s steps(2, start) infinite;
 }
 
-/* AI thinking style */
-.chat-message.thinking .bubble {
-  font-style: italic;
-  color: #999;
+@keyframes blink {
+  to {
+    visibility: hidden;
+  }
+}
+
+/* Code block from MarkdownRenderer */
+.code-block {
+  position: relative;
+  margin-top: 10px;
+  font-size: 0.9rem;
+  overflow-x: auto;
+  border-radius: 8px;
+  background-color: #282c34;
+}
+
+/* Copy button in code block */
+.copy-button {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-size: 12px;
+  background-color: #444;
+  color: white;
+  padding: 4px 8px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.copy-button:hover {
+  background-color: #666;
 }

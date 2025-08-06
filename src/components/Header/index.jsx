@@ -7,8 +7,8 @@ const Header = () => {
 
   const handleUpload = async (e) => {
     const file = e.target.files[0];
-    if (!file || file.type !== 'application/json') {
-      setUploadStatus('❌ Please upload a valid JSON file.');
+    if (!file || file.type !== 'text/csv') {
+      alert('❌ Please upload a valid CSV file.');
       return;
     }
 
@@ -33,10 +33,10 @@ const Header = () => {
       }
 
       const result = await res.json();
-      setUploadStatus(`✅ Uploaded ${result.count} incident(s) successfully.`);
+      alert(`✅ Uploaded ${result.count} incident(s) successfully.`);
     } catch (error) {
       console.error('Upload failed:', error);
-      setUploadStatus(`❌ ${error.message}`);
+      alert(`❌ ${error.message}`);
     } finally {
       setIsLoading(false);
       e.target.value = ''; // reset file input
@@ -55,10 +55,10 @@ const Header = () => {
             <span className="loader" />
           ) : (
             <>
-              📁 Upload Incidents JSON
+              📁 Upload Incidents CSV
               <input
                 type="file"
-                accept=".json"
+                accept=".csv"
                 onChange={handleUpload}
                 className="file-input"
               />

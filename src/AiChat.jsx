@@ -3,7 +3,7 @@ import ChatContainer from './components/ChatContainer';
 import InputBox from './components/InputBox';
 import Header from './components/Header';
 
-function AiChat({token}) {
+function AiChat({ token }) {
   const [messages, setMessages] = useState([]);
   const [botTypingText, setBotTypingText] = useState('');
   const [triggerTyping, setTriggerTyping] = useState(false);
@@ -30,19 +30,19 @@ function AiChat({token}) {
     setIsTyping(true);
 
     try {
-      const response = await fetch('http://localhost:3000/api/v1/ai/question', {
+      const response = await fetch('http://127.0.0.1:8000/query', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
         },
-        body: JSON.stringify({ prompt: text })
+        body: JSON.stringify({ query: text })
       });
 
-      const { data } = await response.json();
+      const data = await response.json();
       console.log('#### AI Response:', data);
 
-      const reply = data?.answer || 'Sorry, something went wrong.';
+      const reply = data?.resolution?.render_text || 'Sorry, something went wrong.';
 
       // Clean up the thinking message
       setMessages((prev) => prev.filter(msg => msg.type !== 'thinking'));
@@ -61,15 +61,28 @@ function AiChat({token}) {
     }
   };
 
+
   useEffect(() => {
     if (!triggerTyping || !hasUserSentMessage || !fullBotMessage) return;
 
-    let index = 0;
+    // If it's HTML content, skip typing animation
+    if (/<[a-z][\s\S]*>/i.test(fullBotMessage)) {
+      setMessages((prev) => [
+        ...prev.filter(msg => msg.type !== 'bot-typing'),
+        { type: 'bot', html: fullBotMessage } // New "html" key for HTML rendering
+      ]);
+      setBotTypingText('');
+      setIsTyping(false);
+      setTriggerTyping(false);
+      setFullBotMessage('');
+      return;
+    }
 
+    // Plain text typing animation
+    let index = 0;
     const interval = setInterval(() => {
       index += 5;
       const typed = fullBotMessage.slice(0, index);
-
       setBotTypingText(typed);
 
       if (index >= fullBotMessage.length) {
@@ -87,6 +100,7 @@ function AiChat({token}) {
 
     return () => clearInterval(interval);
   }, [triggerTyping, fullBotMessage, hasUserSentMessage]);
+
 
   return (
     <div className="app">
